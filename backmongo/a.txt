@@ -1,0 +1,57 @@
+===============================
+
+npm install mongoose
+
+===============================
+
+
+===============================
+
+// models/Desafio.js
+const mongoose = require('mongoose');
+
+const DesafioSchema = new mongoose.Schema({
+  desafio: String,
+  recompensa: String,
+  dataLimite: Date,
+  descricao: String,
+  solucoes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Solucao' }],
+  comunicacao: String,
+  criterios: [String],
+  autorId: String,
+});
+
+module.exports = mongoose.model('Desafio', DesafioSchema);
+
+
+===============================
+
+// models/Solucao.js
+const mongoose = require('mongoose');
+
+const SolucaoSchema = new mongoose.Schema({
+  descricao: String,
+  desafioId: { type: mongoose.Schema.Types.ObjectId, ref: 'Desafio' },
+});
+
+module.exports = mongoose.model('Solucao', SolucaoSchema);
+
+
+===============================
+
+// Desafios.js
+
+
+===============================
+
+router.get('/', async (req, res) => {
+  try {
+    const desafiosMongo = await DesafioMongo.find();
+    res.status(200).json(desafiosMongo);
+  } catch (error) {
+    console.error('Erro ao obter desafios:', error);
+    res.status(500).json({ message: 'Erro ao obter desafios' });
+  }
+});
+
+===============================
